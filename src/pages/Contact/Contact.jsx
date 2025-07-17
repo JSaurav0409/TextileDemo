@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import ContactForm from "../../pages/Contact/ContactForm";
+import ContactForm from "./ContactForm";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);

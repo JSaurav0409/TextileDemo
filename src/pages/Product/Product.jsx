@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ProductCard from "../Product/ProductCard";
+import ProductCard from "./ProductCard";
 import Cotton from "../../assets/images/cotton.jpg";
 import Silk from "../../assets/images/silk.jpg";
 import Polyester from "../../assets/images/polyester.jpg";
