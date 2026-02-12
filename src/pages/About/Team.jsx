@@ -13,7 +13,7 @@ const teamMembers = [
     bio: "John has over 20 years of experience in the textile industry and leads the company with a focus on sustainability.",
   },
   {
-    name: "Jane Smith",
+    name: "Jane Checking",
     role: "Lead Designer",
     image: janeImage,
     bio: "Jane is passionate about creating innovative fabric designs and has been with the company since 2015.",
