@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import johnImage from "../../assets/images/john.jpg"; // Replace with actual image paths
+import johnImage from "../../assets/images/John.jpg"; // Replace with actual image paths
 import janeImage from "../../assets/images/jane.jpg"; // Replace with actual image paths
 import aliceimage from "../../assets/images/alice.jpg";
 
