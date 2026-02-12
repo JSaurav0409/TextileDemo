@@ -2,11 +2,14 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-gray-800 text-white p-6 mt-10">
       <div className="container mx-auto text-center">
         <p className="text-sm sm:text-base md:text-lg">
-          &copy; 2025 Textile Company. All rights reserved.
+          &copy; {new Date().getFullYear()} Textile Company. All rights
+          reserved.
         </p>
         <div className="mt-4">
           <NavLink
