@@ -1,201 +1,123 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
 import AOS from "aos";
 import "aos/dist/aos.css";
+
+// Data Import
+import { historyEvents } from "../../data/historyData";
+
+// Static Asset Imports
 import HistoryImage from "../../assets/images/TextileHistory.jpg";
 import VisionImage from "../../assets/images/vision.jpg";
 import MissionImage from "../../assets/images/mission.jpg";
-import EventImage1 from "../../assets/images/event1.jpg";
-import EventImage2 from "../../assets/images/event2.jpg";
-import EventImage3 from "../../assets/images/event3.jpg"; // Add your event image
-import EventImage4 from "../../assets/images/event4.jpg"; // Add your event image
+import PhilosophySection from "./PhilosophySection";
 
 const CompanyHistory = () => {
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [activeStage, setActiveStage] = useState(0);
+  const navigate = useNavigate(); // 2. Initialize navigate function
 
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 1200,
       easing: "ease-in-out",
-      once: false,
-      offset: 100,
+      once: true,
     });
   }, []);
 
-  const handleEventClick = (eventIndex) => {
-    setSelectedEvent(selectedEvent === eventIndex ? null : eventIndex);
-  };
-
-  const events = [
-    {
-      year: 2000,
-      title: "Foundation",
-      image: EventImage1,
-      description: "Our company was founded in 2000...",
-      details: ["Founded with 5 members", "Focused on high-quality fabrics"],
-    },
-    {
-      year: 2005,
-      title: "Eco-Friendly Fabrics",
-      image: EventImage2,
-      description: "In 2005, we pioneered eco-friendly fabrics...",
-      details: [
-        "Launched eco-friendly product line",
-        "Set sustainability benchmarks",
-      ],
-    },
-    {
-      year: 2010,
-      title: "Reached First 100 Crore",
-      image: EventImage3,
-      description: "In 2010, we reached the milestone...",
-      details: [
-        "Achieved 100 Crore in revenue",
-        "Established ourselves as a trusted brand",
-      ],
-    },
-    {
-      year: 2015,
-      title: "Expanding to More Countries",
-      image: EventImage4,
-      description: "In 2015, we expanded our operations...",
-      details: [
-        "Entered Europe and the Middle East",
-        "Increased global partnerships",
-      ],
-    },
-  ];
-
   return (
-    <section
-      className="company-history p-6 sm:p-8 lg:p-10 bg-gray-100"
-      data-aos="fade-up"
-      data-aos-duration="1000"
-    >
-      <h2
-        className="text-3xl sm:text-4xl font-bold text-center text-primary mb-12 sm:mb-20"
-        data-aos="zoom-in"
-        data-aos-duration="1000"
-      >
-        Our History
-      </h2>
+    <div className="bg-[#0e1012] text-white overflow-hidden">
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-screen flex flex-col justify-center items-center px-6">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={HistoryImage}
+            alt="History Background"
+            className="w-full h-full object-cover opacity-20 grayscale"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0e1012]/50 to-[#0e1012]" />
+        </div>
 
-      {/* Timeline Section */}
-      <div
-        className="timeline mt-8"
-        data-aos="fade-right"
-        data-aos-duration="1000"
-      >
-        <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-6 text-center">
-          Key Events
-        </h3>
+        <div className="relative z-10 text-center" data-aos="fade-up">
+          <span className="text-primary tracking-[0.5em] text-[10px] font-bold uppercase mb-4 block">
+            Our Legacy
+          </span>
+          <h1 className="text-6xl md:text-[120px] font-serif italic leading-none mb-8">
+            Heritage
+          </h1>
+          <p className="text-slate-400 font-light tracking-[0.2em] uppercase text-xs">
+            Crafting the Future since 2000
+          </p>
+        </div>
+      </section>
 
-        {/* Vertical Timeline */}
-        <div className="timeline-container relative pl-8 sm:pl-12 md:pl-16">
-          <div className="timeline-line absolute top-0 left-4 sm:left-6 md:left-8 w-1 bg-blue-500 h-full"></div>
-          {events.map((event, index) => (
-            <div
-              key={event.year}
-              className={`timeline-item cursor-pointer mb-8 sm:mb-10 ${
-                selectedEvent === index ? "selected" : ""
-              }`}
-              onClick={() => handleEventClick(index)}
-            >
-              <div className="flex items-center mb-4">
-                <div
-                  className={`timeline-dot w-10 sm:w-12 h-10 sm:h-12 bg-blue-500 text-white rounded-full flex justify-center items-center font-semibold sm:text-lg transition-all duration-300 ease-in-out transform hover:scale-110 ${
-                    selectedEvent === index
-                      ? "bg-green-500 shadow-lg"
-                      : "hover:bg-blue-700"
+      {/* --- TIMELINE SECTION --- */}
+      <section className="py-32 px-6 lg:px-20">
+        <div className="flex flex-col lg:flex-row gap-20">
+          {/* Sidebar Navigation */}
+          <div className="lg:w-1/3" data-aos="fade-right">
+            <h2 className="text-primary font-bold text-[10px] tracking-widest uppercase mb-12">
+              Historical Record
+            </h2>
+            <div className="space-y-10">
+              {historyEvents.map((event, index) => (
+                <button
+                  key={event.year}
+                  onMouseEnter={() => setActiveStage(index)}
+                  className={`block text-left group transition-all duration-500 ${
+                    activeStage === index ? "opacity-100" : "opacity-20"
                   }`}
-                  style={{
-                    border: "2px solid #fff", // Adding white border like a shirt button
-                  }}
                 >
-                  {event.year}
-                </div>
-                <p className="font-bold sm:text-lg text-center ml-4 sm:ml-6">
-                  {event.title}
-                </p>
-              </div>
-
-              {/* Event Details */}
-              {selectedEvent === index && (
-                <div className="timeline-details mt-4">
-                  <div className="flex flex-col sm:flex-row">
-                    <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
-                      <img
-                        src={event.image}
-                        alt={`Event ${event.year}`}
-                        className="w-full h-64 sm:h-80 object-cover rounded-lg shadow-md"
-                      />
-                    </div>
-                    <div className="w-full sm:w-1/2 pl-0 sm:pl-6 mt-6 sm:mt-0">
-                      <h4 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">
-                        {event.title}
-                      </h4>
-                      <p className="text-sm sm:text-base text-gray-700 mb-4">
-                        {event.description}
-                      </p>
-                      <ul className="list-disc pl-6 text-sm sm:text-base text-gray-600">
-                        {event.details.map((detail, i) => (
-                          <li key={i}>{detail}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              )}
+                  <span className="block text-5xl font-serif italic mb-2">
+                    {event.year}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest">
+                    {event.title}
+                  </span>
+                </button>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* Vision Section */}
-      <hr className="border-t-2 border-gray-300 my-8 sm:my-12 w-1/2 mx-auto" />
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 items-center">
-        <div className="text" data-aos="fade-right" data-aos-duration="1000">
-          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-4">
-            Our Vision
-          </h3>
-          <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-            Our vision is to create sustainable, innovative, and versatile
-            textiles that empower industries and inspire creativity. We are
-            committed to excellence and environmental stewardship.
-          </p>
+          {/* Dynamic Stage View */}
+          <div className="lg:w-2/3 relative min-h-[500px]" data-aos="fade-left">
+            <div className="relative group">
+              <div className="absolute -top-6 -left-6 w-32 h-32 border-t border-l border-primary/50" />
+              <img
+                key={activeStage}
+                src={historyEvents[activeStage].image}
+                alt={historyEvents[activeStage].title}
+                className="w-full aspect-video object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 animate-in fade-in slide-in-from-right-10"
+              />
+            </div>
+            <div className="mt-10 max-w-xl">
+              <span className="text-primary text-[9px] font-black tracking-widest uppercase mb-4 block">
+                {historyEvents[activeStage].tag}
+              </span>
+              <p className="text-2xl font-serif leading-relaxed italic text-slate-300">
+                "{historyEvents[activeStage].desc}"
+              </p>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="image" data-aos="fade-left" data-aos-duration="1000">
-          <img
-            src={VisionImage}
-            alt="Company Vision"
-            className="w-full h-64 sm:h-80 object-cover rounded-lg shadow-md"
-          />
-        </div>
-      </div>
+      {/* --- PHILOSOPHY SECTION --- */}
+      <PhilosophySection visionImg={VisionImage} missionImg={MissionImage} />
 
-      {/* Mission Section */}
-      <hr className="border-t-2 border-gray-300 my-8 sm:my-12 w-1/2 mx-auto" />
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 items-center">
-        <div className="image" data-aos="fade-right" data-aos-duration="1000">
-          <img
-            src={MissionImage}
-            alt="Company Mission"
-            className="w-full h-64 sm:h-80 object-cover rounded-lg shadow-md"
-          />
-        </div>
-
-        <div className="text" data-aos="fade-left" data-aos-duration="1000">
-          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-4">
-            Our Mission
-          </h3>
-          <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-            Our mission is to provide high-quality, sustainable, and innovative
-            textile solutions that enhance lifestyles, empower industries, and
-            foster global connections.
-          </p>
-        </div>
-      </div>
-    </section>
+      {/* --- CALL TO ACTION --- */}
+      <section className="py-32 border-t border-white/5 text-center">
+        <h2 className="text-4xl font-serif italic mb-10">
+          Ready to see our collections?
+        </h2>
+        {/* 3. Add onClick handler to redirect to /products */}
+        <button
+          onClick={() => navigate("/products")}
+          className="px-12 py-4 border border-white/20 hover:border-primary hover:bg-primary transition-all duration-500 text-[10px] font-black uppercase tracking-[0.3em]"
+        >
+          Explore Products
+        </button>
+      </section>
+    </div>
   );
 };
 

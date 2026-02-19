@@ -4,7 +4,7 @@ const ContactForm = ({ onSubmit, onLoading }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "", // Added phone field
+    phone: "",
     message: "",
   });
 
@@ -12,147 +12,108 @@ const ContactForm = ({ onSubmit, onLoading }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const validatePhone = (phone) => {
-    const regex = /^[0-9]{10}$/; // Simple validation for 10-digit phone number
-    return regex.test(phone);
-  };
-
   const onSubmitForm = async (event) => {
     event.preventDefault();
-
-    // Validate form fields
-    if (!formData.name || !formData.email || !formData.message) {
-      onSubmit("All fields are required.", "error");
-      return;
-    }
-
-    if (!validateEmail(formData.email)) {
-      onSubmit("Please enter a valid email address.", "error");
-      return;
-    }
-
-    if (formData.phone && !validatePhone(formData.phone)) {
-      onSubmit("Please enter a valid phone number.", "error");
-      return;
-    }
-
-    onLoading(true); // Start loading
-    onSubmit("", ""); // Reset status messages
+    onLoading(true);
 
     const formDataToSubmit = {
       ...formData,
-      access_key: "2d25fac2-634b-4f92-af7e-1340431c6c7d", 
+      access_key: "2d25fac2-634b-4f92-af7e-1340431c6c7d",
     };
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formDataToSubmit),
       }).then((res) => res.json());
 
       if (res.success) {
-        onSubmit("Your message has been sent successfully!", "success");
-        setFormData({ name: "", email: "", phone: "", message: "" }); // Clear fields
+        onSubmit("Your message has been received.", "success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        onSubmit("There was an error submitting your message.", "error");
+        onSubmit("Something went wrong. Please try again.", "error");
       }
     } catch (error) {
-      onSubmit("Something went wrong, please try again.", "error");
+      onSubmit("Connection error.", "error");
     } finally {
-      onLoading(false); // Stop loading
+      onLoading(false);
     }
   };
 
+  // Shared Tailwind styles for inputs
+  const inputStyles =
+    "w-full bg-transparent border-b border-slate-300 py-3 outline-none focus:border-primary transition-all duration-300 placeholder:text-slate-300 text-slate-800 font-light";
+
   return (
-    <form onSubmit={onSubmitForm} className="space-y-6">
-      {/* Name Field */}
-      <div className="flex flex-col">
-        <label htmlFor="name" className="text-lg font-semibold text-gray-800">
-          Name:
+    <form onSubmit={onSubmitForm} className="space-y-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="group">
+          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+            Your Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className={inputStyles}
+            placeholder="Full Name"
+            required
+          />
+        </div>
+        <div className="group">
+          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+            Email Address
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={inputStyles}
+            placeholder="email@address.com"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="group">
+        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+          Phone Number (Optional)
         </label>
         <input
           type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className="border-2 border-gray-300 p-3 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your name"
-          required
-        />
-      </div>
-
-      {/* Email Field */}
-      <div className="flex flex-col">
-        <label htmlFor="email" className="text-lg font-semibold text-gray-800">
-          Email:
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="border-2 border-gray-300 p-3 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your email"
-          required
-        />
-      </div>
-
-      {/* Phone Field */}
-      <div className="flex flex-col">
-        <label htmlFor="phone" className="text-lg font-semibold text-gray-800">
-          Phone:
-        </label>
-        <input
-          type="text"
-          id="phone"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          className="border-2 border-gray-300 p-3 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your phone number"
+          className={inputStyles}
+          placeholder="+1 (000) 000-0000"
         />
       </div>
 
-      {/* Message Field */}
-      <div className="flex flex-col">
-        <label
-          htmlFor="message"
-          className="text-lg font-semibold text-gray-800"
-        >
-          Message:
+      <div className="group">
+        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+          Your Inquiry
         </label>
         <textarea
-          id="message"
           name="message"
           value={formData.message}
           onChange={handleChange}
-          className="border-2 border-gray-300 p-3 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your message"
-          rows="5"
+          className={`${inputStyles} resize-none`}
+          rows="4"
+          placeholder="Tell us about your project..."
           required
         />
       </div>
 
-      {/* Submit Button */}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Submit
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="group relative overflow-hidden bg-slate-900 text-white px-12 py-4 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-primary transition-all duration-500 shadow-xl"
+      >
+        <span className="relative z-10">Send Message</span>
+        <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+      </button>
     </form>
   );
 };
