@@ -72,18 +72,18 @@ const HeroSection = () => {
               compromise on quality.
             </p>
 
-            <div className="flex flex-wrap gap-5">
+            {/* Updated Flex Container: Column on mobile, Row on tablet+ */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 sm:gap-8">
               <Button
                 onClick={handleScroll}
-                className="!bg-slate-900 !text-white px-10 py-4 hover:!bg-primary transition-colors shadow-lg"
+                className="w-full sm:w-auto !bg-slate-900 !text-white px-10 py-4 hover:!bg-primary transition-colors shadow-lg"
               >
                 View Catalog
               </Button>
 
-              {/* 3. Add the onClick handler here */}
               <button
                 onClick={() => navigate("/contact")}
-                className="text-slate-900 font-semibold border-b-2 border-slate-900 pb-1 hover:text-primary hover:border-primary transition-all active:scale-95"
+                className="w-full sm:w-auto text-slate-900 font-semibold border-b-2 border-slate-900 pb-1 hover:text-primary hover:border-primary transition-all active:scale-95 text-center sm:text-left"
               >
                 Request Samples
               </button>
