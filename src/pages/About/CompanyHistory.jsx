@@ -104,18 +104,49 @@ const CompanyHistory = () => {
       {/* --- PHILOSOPHY SECTION --- */}
       <PhilosophySection visionImg={VisionImage} missionImg={MissionImage} />
 
-      {/* --- CALL TO ACTION --- */}
-      <section className="py-32 border-t border-white/5 text-center">
-        <h2 className="text-4xl font-serif italic mb-10">
-          Ready to see our collections?
-        </h2>
-        {/* 3. Add onClick handler to redirect to /products */}
-        <button
-          onClick={() => navigate("/products")}
-          className="px-12 py-4 border border-white/20 hover:border-primary hover:bg-primary transition-all duration-500 text-[10px] font-black uppercase tracking-[0.3em]"
-        >
-          Explore Products
-        </button>
+      {/* --- CTA SECTION REDESIGN --- */}
+      <section className="relative py-48 overflow-hidden bg-[#0e1012]">
+        {/* Decorative "Thread" Background */}
+        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent -translate-y-1/2" />
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div className="max-w-3xl mx-auto" data-aos="fade-up">
+            <span className="text-primary tracking-[0.6em] text-[10px] font-black uppercase mb-6 block">
+              Next Chapter
+            </span>
+
+            <h2 className="text-5xl md:text-8xl font-serif italic text-white leading-tight mb-12">
+              From our <span className="text-slate-500">Archives</span> <br />
+              to your <span className="text-white">Reality.</span>
+            </h2>
+
+            <p className="text-slate-400 font-light text-lg mb-16 max-w-xl mx-auto leading-relaxed">
+              Experience the culmination of two decades of textile excellence.
+              Browse our latest collections designed for the modern world.
+            </p>
+
+            <div className="group relative inline-block">
+              <button
+                onClick={() => navigate("/products")}
+                className="relative z-10 px-16 py-6 bg-transparent text-white text-[11px] font-bold uppercase tracking-[0.5em] overflow-hidden transition-colors duration-500 hover:text-[#0e1012]"
+              >
+                {/* Animated Background Layer */}
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out -z-10" />
+                {/* Button Border */}
+                <div className="absolute inset-0 border border-white/20 group-hover:border-white transition-colors duration-500 -z-10" />
+                View Collections
+              </button>
+
+              {/* Decorative Floating Element */}
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-1 h-12 bg-primary/50 group-hover:h-16 transition-all duration-700" />
+            </div>
+          </div>
+        </div>
+
+        {/* Subtle Side Label */}
+        <div className="absolute bottom-10 right-10 rotate-90 origin-right text-[10px] tracking-[1em] text-slate-700 uppercase hidden lg:block">
+          Scroll to Explore
+        </div>
       </section>
     </div>
   );
