@@ -112,7 +112,7 @@ const ContactForm = ({ onSubmit, onLoading }) => {
         className="group relative overflow-hidden bg-slate-900 text-white px-12 py-4 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-primary transition-all duration-500 shadow-xl"
       >
         <span className="relative z-10">Send Message</span>
-        <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
       </button>
     </form>
   );

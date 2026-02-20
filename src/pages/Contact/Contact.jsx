@@ -38,8 +38,8 @@ const Contact = () => {
               </h3>
               <p className="text-slate-500 leading-relaxed italic">
                 123 Textile Road, <br />
-                Fabric District, Suite 400 <br />
-                Manchester, UK
+                Bhiwandi, Thane 421 302 <br />
+                Mumbai, India
               </p>
             </div>
 
@@ -50,7 +50,7 @@ const Contact = () => {
               <p className="text-slate-500 underline decoration-slate-200 underline-offset-8">
                 hello@textilecompany.com
               </p>
-              <p className="text-slate-500 mt-2">+44 (0) 161 123 4567</p>
+              <p className="text-slate-500 mt-2">+91 98765 43210</p>
             </div>
 
             {/* Aesthetic Box */}
