@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { products } from "../../data/product"; // Import the central data
-import ProductCard from "./ProductCard";
+import { products } from "../../data/product";
 
-const Products = () => {
+const Products = ({ limit }) => {
   useEffect(() => {
     AOS.init({
       duration: 1200,
@@ -12,6 +12,8 @@ const Products = () => {
       once: true,
     });
   }, []);
+
+  const displayedProducts = limit ? products.slice(0, limit) : products;
 
   return (
     <section id="product-list" className="py-24 bg-[#fafafa]">
@@ -36,14 +38,13 @@ const Products = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-          {products.map((product, index) => (
+          {displayedProducts.map((product, index) => (
             <div
               key={product.id}
               data-aos="fade-up"
               data-aos-delay={index * 100}
               className="group cursor-pointer"
             >
-              {/* Product Card Container */}
               <div className="relative overflow-hidden aspect-[4/5] bg-gray-200 mb-6">
                 <img
                   src={product.image}
@@ -56,7 +57,6 @@ const Products = () => {
                 </span>
               </div>
 
-              {/* Text Content */}
               <div className="flex justify-between items-end border-b border-slate-200 pb-4">
                 <div>
                   <h3 className="text-xl font-serif text-slate-900 group-hover:text-primary transition-colors italic">
@@ -73,6 +73,28 @@ const Products = () => {
             </div>
           ))}
         </div>
+
+        {/* --- REVERSED ANIMATION BUTTON --- */}
+        {limit && (
+          <div className="mt-20 flex justify-center" data-aos="fade-up">
+            <Link
+              to="/products"
+              /* 1. bg-white: The default state
+                 2. text-slate-900: Dark text on white
+                 3. hover:text-white: Invert text color on hover
+              */
+              className="group relative isolate inline-block px-12 py-5 bg-white overflow-hidden border border-slate-900 transition-colors duration-500 hover:text-white"
+            >
+              {/* The Rising Tide Fill: Slate-900 color sliding up */}
+              <div className="absolute inset-0 z-0 bg-slate-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+
+              {/* The Text Layer */}
+              <span className="relative z-10 uppercase tracking-[0.3em] text-[11px] font-bold transition-colors duration-500">
+                View More Collection
+              </span>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

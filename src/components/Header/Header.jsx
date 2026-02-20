@@ -7,7 +7,7 @@ const Header = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Clean, consistent link styles
+  // Clean, consistent link styles for Desktop
   const linkStyles = ({ isActive }) =>
     `relative px-4 py-2 transition-all duration-300 text-[11px] uppercase tracking-[0.3em] font-bold ${
       isActive
@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <header className="fixed top-0 w-full z-[100] bg-white border-b border-slate-100 shadow-sm py-4">
       <div className="container mx-auto flex justify-between items-center px-6 md:px-12">
-        {/* LOGO */}
+        {/* --- LOGO --- */}
         <Link
           to="/"
           className="group flex flex-col items-start"
@@ -33,7 +33,7 @@ const Header = () => {
           </span>
         </Link>
 
-        {/* DESKTOP NAV */}
+        {/* --- DESKTOP NAV --- */}
         <nav className="hidden lg:block">
           <ul className="flex items-center space-x-2">
             <li>
@@ -59,35 +59,38 @@ const Header = () => {
           </ul>
         </nav>
 
-        {/* INQUIRY BUTTON */}
+        {/* --- DESKTOP INQUIRY BUTTON (MATCHED STYLE) --- */}
         <div className="hidden lg:block">
           <button
             onClick={() => navigate("/contact")}
-            className="border border-slate-900 px-8 py-2.5 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300 active:scale-95"
+            className="group relative isolate border border-slate-900 px-8 py-2.5 overflow-hidden transition-all duration-300"
           >
-            Inquiry
+            <span className="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-900 group-hover:text-white transition-colors duration-300">
+              Inquiry
+            </span>
+            <div className="absolute inset-0 z-0 bg-slate-900 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </button>
         </div>
 
-        {/* MOBILE TOGGLE */}
+        {/* --- MOBILE TOGGLE --- */}
         <button
           onClick={toggleMenu}
           className="lg:hidden z-50 p-2 text-slate-900 focus:outline-none"
         >
           <div className="w-6 space-y-1.5">
             <span
-              className={`block h-0.5 bg-current transition-all ${isOpen ? "rotate-45 translate-y-2" : ""}`}
+              className={`block h-0.5 bg-current transition-all duration-300 ${isOpen ? "rotate-45 translate-y-2" : ""}`}
             />
             <span
-              className={`block h-0.5 bg-current transition-all ${isOpen ? "opacity-0" : ""}`}
+              className={`block h-0.5 bg-current transition-all duration-300 ${isOpen ? "opacity-0" : ""}`}
             />
             <span
-              className={`block h-0.5 bg-current transition-all ${isOpen ? "-rotate-45 -translate-y-2" : ""}`}
+              className={`block h-0.5 bg-current transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-2" : ""}`}
             />
           </div>
         </button>
 
-        {/* MOBILE OVERLAY */}
+        {/* --- MOBILE OVERLAY --- */}
         <div
           className={`
           fixed inset-0 bg-white z-40 flex flex-col items-center justify-center
@@ -107,16 +110,27 @@ const Header = () => {
                 </NavLink>
               </li>
             ))}
-            <li className="pt-8">
-              <button
-                onClick={() => {
-                  navigate("/contact");
-                  setIsOpen(false);
-                }}
-                className="bg-slate-900 text-white px-12 py-4 text-xs font-bold uppercase tracking-widest"
-              >
-                Inquire Now
-              </button>
+
+            {/* --- RE-DESIGNED MOBILE INQUIRE BUTTON --- */}
+            <li className="pt-12">
+              <div className="group relative inline-block">
+                <button
+                  onClick={() => {
+                    navigate("/contact");
+                    setIsOpen(false);
+                  }}
+                  className="isolate relative z-10 px-16 py-6 bg-slate-900 text-white text-[11px] font-bold uppercase tracking-[0.5em] overflow-hidden transition-colors duration-500 hover:text-slate-900"
+                >
+                  {/* Rising Tide Fill */}
+                  <div className="absolute inset-0 z-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+
+                  {/* Button Text */}
+                  <span className="relative z-20">Inquire Now</span>
+                </button>
+
+                {/* Decorative Editorial Line */}
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-primary/30 group-hover:h-16 transition-all duration-700" />
+              </div>
             </li>
           </ul>
         </div>
