@@ -7,7 +7,6 @@ const Header = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Clean, consistent link styles for Desktop
   const linkStyles = ({ isActive }) =>
     `relative px-4 py-2 transition-all duration-300 text-[11px] uppercase tracking-[0.3em] font-bold ${
       isActive
@@ -25,8 +24,7 @@ const Header = () => {
           onClick={() => setIsOpen(false)}
         >
           <h1 className="text-2xl font-serif font-bold text-slate-900 tracking-tight leading-none">
-            TEX
-            <span className="text-primary italic">TILE</span>
+            TEX<span className="text-primary italic">TILE</span>
           </h1>
           <span className="text-[10px] tracking-[0.3em] uppercase text-slate-500 group-hover:text-primary transition-colors">
             Co. Heritage
@@ -59,14 +57,14 @@ const Header = () => {
           </ul>
         </nav>
 
-        {/* --- DESKTOP INQUIRY BUTTON (MATCHED STYLE) --- */}
+        {/* --- PREMIUM QUOTE BUTTON --- */}
         <div className="hidden lg:block">
           <button
             onClick={() => navigate("/contact")}
             className="group relative isolate border border-slate-900 px-8 py-2.5 overflow-hidden transition-all duration-300"
           >
             <span className="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-900 group-hover:text-white transition-colors duration-300">
-              Inquiry
+              Request Quote
             </span>
             <div className="absolute inset-0 z-0 bg-slate-900 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </button>
@@ -92,11 +90,7 @@ const Header = () => {
 
         {/* --- MOBILE OVERLAY --- */}
         <div
-          className={`
-          fixed inset-0 bg-white z-40 flex flex-col items-center justify-center
-          transition-all duration-500 ease-in-out lg:hidden
-          ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}
-        `}
+          className={`fixed inset-0 bg-white z-40 flex flex-col items-center justify-center transition-all duration-500 lg:hidden ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
         >
           <ul className="flex flex-col items-center space-y-8">
             {["Home", "Products", "About", "Contact"].map((item) => (
@@ -110,27 +104,16 @@ const Header = () => {
                 </NavLink>
               </li>
             ))}
-
-            {/* --- RE-DESIGNED MOBILE INQUIRE BUTTON --- */}
             <li className="pt-12">
-              <div className="group relative inline-block">
-                <button
-                  onClick={() => {
-                    navigate("/contact");
-                    setIsOpen(false);
-                  }}
-                  className="isolate relative z-10 px-16 py-6 bg-slate-900 text-white text-[11px] font-bold uppercase tracking-[0.5em] overflow-hidden transition-colors duration-500 hover:text-slate-900"
-                >
-                  {/* Rising Tide Fill */}
-                  <div className="absolute inset-0 z-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-
-                  {/* Button Text */}
-                  <span className="relative z-20">Inquire Now</span>
-                </button>
-
-                {/* Decorative Editorial Line */}
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-primary/30 group-hover:h-16 transition-all duration-700" />
-              </div>
+              <button
+                onClick={() => {
+                  navigate("/contact");
+                  setIsOpen(false);
+                }}
+                className="px-16 py-6 bg-slate-900 text-white text-[11px] font-bold uppercase tracking-[0.5em]"
+              >
+                Request Quote
+              </button>
             </li>
           </ul>
         </div>

@@ -11,10 +11,20 @@ const Contact = () => {
     AOS.init({ duration: 1200, once: true });
   }, []);
 
+  // Auto-clear status message after 5 seconds
+  useEffect(() => {
+    if (status.message) {
+      const timer = setTimeout(
+        () => setStatus({ message: "", type: "" }),
+        5000,
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
   return (
     <div className="min-h-screen bg-white pt-32 pb-20 overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-        {/* Header Block */}
         <div className="mb-20 text-center lg:text-left" data-aos="fade-up">
           <span className="text-primary font-bold tracking-[0.4em] uppercase text-[11px] mb-4 block">
             Get In Touch
@@ -26,12 +36,8 @@ const Contact = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          {/* Left Panel: Brand Info */}
-          <div
-            className="lg:col-span-4 space-y-12"
-            data-aos="fade-right"
-            data-aos-delay="200"
-          >
+          {/* Left Panel */}
+          <div className="lg:col-span-4 space-y-12" data-aos="fade-right">
             <div className="border-l-2 border-primary pl-8 py-2">
               <h3 className="text-sm uppercase tracking-widest font-black text-slate-900 mb-4">
                 Our Studio
@@ -53,39 +59,33 @@ const Contact = () => {
               <p className="text-slate-500 mt-2">+91 98765 43210</p>
             </div>
 
-            {/* Aesthetic Box */}
             <div className="bg-slate-50 p-10 rounded-sm">
               <p className="text-xs text-slate-400 uppercase tracking-widest leading-loose">
-                "Quality is never an accident; <br />
-                it is always the result <br />
-                of intelligent effort."
+                "Quality is never an accident; <br /> it is always the result{" "}
+                <br /> of intelligent effort."
               </p>
             </div>
           </div>
 
-          {/* Right Panel: The Form */}
-          <div
-            className="lg:col-span-8 relative"
-            data-aos="fade-left"
-            data-aos-delay="400"
-          >
-            {/* Elegant Spinner */}
+          {/* Right Panel: The Form Wrapper */}
+          <div className="lg:col-span-8 relative" data-aos="fade-left">
+            {/* Loading Overlay */}
             {loading && (
-              <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
-                <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                <p className="mt-4 text-[10px] uppercase tracking-widest font-bold">
+              <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center transition-all duration-500">
+                <div className="w-10 h-10 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-[10px] uppercase tracking-widest font-bold text-slate-900">
                   Transmitting...
                 </p>
               </div>
             )}
 
-            {/* Status Feedback */}
+            {/* CONSISTENT BRANDED STATUS MESSAGE */}
             {status.message && (
               <div
-                className={`mb-10 p-5 text-xs font-bold uppercase tracking-widest text-center ${
+                className={`mb-10 p-6 text-[10px] font-bold uppercase tracking-[0.3em] text-center border animate-in fade-in slide-in-from-top-4 duration-500 ${
                   status.type === "success"
-                    ? "bg-green-50 text-green-600"
-                    : "bg-red-50 text-red-600"
+                    ? "bg-slate-900 text-white border-slate-900 shadow-xl"
+                    : "bg-red-50 text-red-600 border-red-100"
                 }`}
               >
                 {status.message}

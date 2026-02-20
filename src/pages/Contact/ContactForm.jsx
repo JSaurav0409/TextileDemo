@@ -16,40 +16,49 @@ const ContactForm = ({ onSubmit, onLoading }) => {
     event.preventDefault();
     onLoading(true);
 
-    const formDataToSubmit = {
+    const submissionData = {
       ...formData,
       access_key: "2d25fac2-634b-4f92-af7e-1340431c6c7d",
+      from_name: "Textile Co. Heritage Portal",
+      subject: `New Inquiry from ${formData.name}`,
     };
 
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formDataToSubmit),
-      }).then((res) => res.json());
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
 
-      if (res.success) {
+      const result = await response.json();
+
+      if (result.success) {
         onSubmit("Your message has been received.", "success");
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        onSubmit("Something went wrong. Please try again.", "error");
+        onSubmit(
+          result.message || "Submission failed. Please try again.",
+          "error",
+        );
       }
     } catch (error) {
-      onSubmit("Connection error.", "error");
+      onSubmit("Network error. Please check your connection.", "error");
     } finally {
       onLoading(false);
     }
   };
 
-  // Shared Tailwind styles for inputs
   const inputStyles =
-    "w-full bg-transparent border-b border-slate-300 py-3 outline-none focus:border-primary transition-all duration-300 placeholder:text-slate-300 text-slate-800 font-light";
+    "w-full bg-transparent border-b border-slate-300 py-3 outline-none focus:border-slate-900 transition-all duration-300 placeholder:text-slate-200 text-slate-800 font-light";
 
   return (
     <form onSubmit={onSubmitForm} className="space-y-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="group">
-          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
             Your Name
           </label>
           <input
@@ -63,7 +72,7 @@ const ContactForm = ({ onSubmit, onLoading }) => {
           />
         </div>
         <div className="group">
-          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
             Email Address
           </label>
           <input
@@ -79,21 +88,21 @@ const ContactForm = ({ onSubmit, onLoading }) => {
       </div>
 
       <div className="group">
-        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
           Phone Number (Optional)
         </label>
         <input
-          type="text"
+          type="tel"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
           className={inputStyles}
-          placeholder="+1 (000) 000-0000"
+          placeholder="+91 00000 00000"
         />
       </div>
 
       <div className="group">
-        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
           Your Inquiry
         </label>
         <textarea
@@ -109,10 +118,10 @@ const ContactForm = ({ onSubmit, onLoading }) => {
 
       <button
         type="submit"
-        className="group relative overflow-hidden bg-slate-900 text-white px-12 py-4 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-primary transition-all duration-500 shadow-xl"
+        className="group relative overflow-hidden bg-slate-900 text-white px-12 py-5 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-slate-800 transition-all duration-500 shadow-xl"
       >
         <span className="relative z-10">Send Message</span>
-        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+        <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
       </button>
     </form>
   );
