@@ -6,6 +6,7 @@ const ContactForm = ({ onSubmit, onLoading }) => {
     email: "",
     phone: "",
     message: "",
+    botcheck: "", // New honeypot state
   });
 
   const handleChange = (e) => {
@@ -16,10 +17,19 @@ const ContactForm = ({ onSubmit, onLoading }) => {
     event.preventDefault();
     onLoading(true);
 
+    // If the hidden honeypot is filled, stop submission locally
+    if (formData.botcheck) {
+      onLoading(false);
+      return;
+    }
+
     const submissionData = {
-      ...formData,
       access_key: "2d25fac2-634b-4f92-af7e-1340431c6c7d",
-      from_name: "Textile Co. Heritage Portal",
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      from_name: "Textile Heritage Portal",
       subject: `New Inquiry from ${formData.name}`,
     };
 
@@ -37,12 +47,19 @@ const ContactForm = ({ onSubmit, onLoading }) => {
 
       if (result.success) {
         onSubmit("Your message has been received.", "success");
-        setFormData({ name: "", email: "", phone: "", message: "" });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+          botcheck: "",
+        });
       } else {
-        onSubmit(
-          result.message || "Submission failed. Please try again.",
-          "error",
-        );
+        // Specifically catch the spam message from the server
+        const errorMsg = result.message?.includes("spam")
+          ? "Submission flagged as spam. Please try again with different content."
+          : result.message;
+        onSubmit(errorMsg || "Submission failed.", "error");
       }
     } catch (error) {
       onSubmit("Network error. Please check your connection.", "error");
@@ -56,9 +73,19 @@ const ContactForm = ({ onSubmit, onLoading }) => {
 
   return (
     <form onSubmit={onSubmitForm} className="space-y-10">
+      {/* Honeypot Field - Hidden from users */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        className="hidden"
+        style={{ display: "none" }}
+        onChange={handleChange}
+        checked={formData.botcheck}
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="group">
-          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
+          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
             Your Name
           </label>
           <input
@@ -72,7 +99,7 @@ const ContactForm = ({ onSubmit, onLoading }) => {
           />
         </div>
         <div className="group">
-          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
+          <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
             Email Address
           </label>
           <input
@@ -88,8 +115,8 @@ const ContactForm = ({ onSubmit, onLoading }) => {
       </div>
 
       <div className="group">
-        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
-          Phone Number (Optional)
+        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+          Phone Number
         </label>
         <input
           type="tel"
@@ -102,7 +129,7 @@ const ContactForm = ({ onSubmit, onLoading }) => {
       </div>
 
       <div className="group">
-        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 group-focus-within:text-slate-900 transition-colors">
+        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
           Your Inquiry
         </label>
         <textarea
