@@ -1,8 +1,8 @@
 // src/data/historyData.js
-import EventImage1 from "../assets/images/event1.jpg";
-import EventImage2 from "../assets/images/event2.jpg";
-import EventImage3 from "../assets/images/event3.jpg";
-import EventImage4 from "../assets/images/event4.jpg";
+import EventImage1 from "../assets/images/event1.webp";
+import EventImage2 from "../assets/images/event2.webp";
+import EventImage3 from "../assets/images/event3.webp";
+import EventImage4 from "../assets/images/event4.webp";
 
 export const historyEvents = [
   {

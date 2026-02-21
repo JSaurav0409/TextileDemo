@@ -7,7 +7,7 @@ import "aos/dist/aos.css";
 import { historyEvents } from "../../data/historyData";
 
 // Static Asset Imports
-import HistoryImage from "../../assets/images/TextileHistory.jpg";
+import HistoryImage from "../../assets/images/TextileHistory.webp";
 import VisionImage from "../../assets/images/vision.jpg";
 import MissionImage from "../../assets/images/mission.jpg";
 import PhilosophySection from "./PhilosophySection";
