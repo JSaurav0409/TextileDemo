@@ -6,28 +6,25 @@ import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Product from "./pages/Product/Product";
 import Contact from "./pages/Contact/Contact";
-
-// 1. Import your custom logic hook
+import RequestQuote from "./pages/Contact/RequestQuote"; // New Page
 import useScrollToTop from "./hooks/useScrollTop";
 
-// 2. Create the wrapper to call the hook inside the Router context
 const AppContent = () => {
-  // This ensures the window resets to (0,0) whenever the URL path changes
   useScrollToTop();
 
   return (
     <div className="relative overflow-x-hidden flex flex-col min-h-screen w-full">
       <Header />
-
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Product />} />
           <Route path="/contact" element={<Contact />} />
+          {/* New Route Added Below */}
+          <Route path="/request-quote" element={<RequestQuote />} />
         </Routes>
       </main>
-
       <Footer />
     </div>
   );

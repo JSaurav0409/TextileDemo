@@ -1,104 +1,168 @@
-import React, { useState, useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import ContactForm from "./ContactForm";
+import React, { useState } from "react";
 
 const Contact = () => {
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState({ message: "", type: "" });
+  const [status, setStatus] = useState({ loading: false, msg: "", type: "" });
 
-  useEffect(() => {
-    AOS.init({ duration: 1200, once: true });
-  }, []);
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ loading: true, msg: "", type: "" });
+    const formData = new FormData(e.target);
+    if (formData.get("botcheck")) return;
 
-  // Auto-clear status message after 5 seconds
-  useEffect(() => {
-    if (status.message) {
-      const timer = setTimeout(
-        () => setStatus({ message: "", type: "" }),
-        5000,
-      );
-      return () => clearTimeout(timer);
+    formData.append("access_key", "2d25fac2-634b-4f92-af7e-1340431c6c7d");
+    formData.append("subject", "General Contact - Textile Heritage");
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      }).then((r) => r.json());
+
+      if (res.success) {
+        setStatus({
+          loading: false,
+          msg: "MESSAGE SENT SUCCESSFULLY",
+          type: "success",
+        });
+        e.target.reset();
+      } else {
+        setStatus({ loading: false, msg: res.message, type: "error" });
+      }
+    } catch (err) {
+      setStatus({ loading: false, msg: "TRANSMISSION ERROR", type: "error" });
     }
-  }, [status]);
+  };
+
+  // Darker, high-contrast borders and text
+  const inputStyles =
+    "w-full bg-slate-50 border-b-2 border-slate-300 px-4 py-4 outline-none focus:border-slate-900 focus:bg-white transition-all duration-300 placeholder:text-slate-400 text-slate-900 text-base font-medium";
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-20 overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-        <div className="mb-20 text-center lg:text-left" data-aos="fade-up">
-          <span className="text-primary font-bold tracking-[0.4em] uppercase text-[11px] mb-4 block">
-            Get In Touch
-          </span>
-          <h1 className="text-5xl md:text-7xl font-serif text-slate-900 leading-tight">
-            The Weave of <br />{" "}
-            <span className="italic text-slate-400">Communication.</span>
-          </h1>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          {/* Left Panel */}
-          <div className="lg:col-span-4 space-y-12" data-aos="fade-right">
-            <div className="border-l-2 border-primary pl-8 py-2">
-              <h3 className="text-sm uppercase tracking-widest font-black text-slate-900 mb-4">
-                Our Studio
-              </h3>
-              <p className="text-slate-500 leading-relaxed italic">
-                123 Textile Road, <br />
-                Bhiwandi, Thane 421 302 <br />
-                Mumbai, India
-              </p>
+    <div className="min-h-screen bg-white pt-32 lg:pt-48 pb-20">
+      <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          {/* --- FORM SECTION: TOP ON MOBILE --- */}
+          <div className="lg:col-span-7 order-1 lg:order-2 bg-white p-8 md:p-12 rounded-lg border border-slate-200 shadow-2xl shadow-slate-100">
+            <div className="mb-10">
+              <h2 className="text-3xl font-serif text-slate-900 mb-2">
+                Send a Message
+              </h2>
+              <div className="h-1 w-12 bg-slate-900"></div>
             </div>
 
-            <div className="pl-8">
-              <h3 className="text-sm uppercase tracking-widest font-black text-slate-900 mb-4">
-                General Inquiry
-              </h3>
-              <p className="text-slate-500 underline decoration-slate-200 underline-offset-8">
-                hello@textilecompany.com
-              </p>
-              <p className="text-slate-500 mt-2">+91 98765 43210</p>
-            </div>
-
-            <div className="bg-slate-50 p-10 rounded-sm">
-              <p className="text-xs text-slate-400 uppercase tracking-widest leading-loose">
-                "Quality is never an accident; <br /> it is always the result{" "}
-                <br /> of intelligent effort."
-              </p>
-            </div>
-          </div>
-
-          {/* Right Panel: The Form Wrapper */}
-          <div className="lg:col-span-8 relative" data-aos="fade-left">
-            {/* Loading Overlay */}
-            {loading && (
-              <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center transition-all duration-500">
-                <div className="w-10 h-10 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
-                <p className="mt-4 text-[10px] uppercase tracking-widest font-bold text-slate-900">
-                  Transmitting...
-                </p>
-              </div>
-            )}
-
-            {/* CONSISTENT BRANDED STATUS MESSAGE */}
-            {status.message && (
+            {status.msg && (
               <div
-                className={`mb-10 p-6 text-[10px] font-bold uppercase tracking-[0.3em] text-center border animate-in fade-in slide-in-from-top-4 duration-500 ${
+                className={`mb-10 p-5 text-xs font-bold uppercase tracking-widest text-center border-2 ${
                   status.type === "success"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xl"
-                    : "bg-red-50 text-red-600 border-red-100"
+                    ? "bg-slate-900 text-white border-slate-900"
+                    : "bg-red-50 text-red-700 border-red-200"
                 }`}
               >
-                {status.message}
+                {status.msg}
               </div>
             )}
 
-            <div className="bg-white p-2 lg:p-10 border border-slate-100 shadow-2xl shadow-slate-200/50">
-              <ContactForm
-                onSubmit={(msg, type) =>
-                  setStatus({ message: msg, type: type })
-                }
-                onLoading={setLoading}
+            <form onSubmit={handleContactSubmit} className="space-y-8">
+              <input
+                type="checkbox"
+                name="botcheck"
+                className="hidden"
+                style={{ display: "none" }}
               />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-[11px] uppercase tracking-widest font-black text-slate-900">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="John Doe"
+                    required
+                    className={inputStyles}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[11px] uppercase tracking-widest font-black text-slate-900">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="john@example.com"
+                    required
+                    className={inputStyles}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[11px] uppercase tracking-widest font-black text-slate-900">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  placeholder="How can we help you today?"
+                  required
+                  rows="5"
+                  className={inputStyles}
+                ></textarea>
+              </div>
+
+              <button
+                disabled={status.loading}
+                className="w-full bg-slate-900 text-white py-5 text-xs uppercase tracking-[0.3em] font-bold transition-all hover:bg-black hover:tracking-[0.4em] active:scale-[0.98]"
+              >
+                {status.loading ? "PROCESSING..." : "SUBMIT INQUIRY"}
+              </button>
+            </form>
+          </div>
+
+          {/* --- INFO SECTION: BOTTOM ON MOBILE --- */}
+          <div className="lg:col-span-5 order-2 lg:order-1 space-y-12 py-4">
+            <div>
+              <span className="text-slate-400 font-bold tracking-[0.4em] uppercase text-[10px] mb-4 block">
+                Communication
+              </span>
+              <h1 className="text-6xl md:text-7xl font-serif text-slate-900 leading-tight">
+                Let's start <br /> a{" "}
+                <span className="italic text-slate-400 underline decoration-slate-200 decoration-1 underline-offset-8">
+                  thread.
+                </span>
+              </h1>
+            </div>
+
+            <div className="space-y-10 pt-10 border-t border-slate-100">
+              <div className="flex gap-6 items-start">
+                <div className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center shrink-0">
+                  <span className="text-white text-xs font-serif">E</span>
+                </div>
+                <div>
+                  <h4 className="text-xs uppercase tracking-widest font-bold text-slate-900 mb-1">
+                    Email Us
+                  </h4>
+                  <p className="text-slate-600 font-medium text-lg italic">
+                    studio@textileco.heritage
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6 items-start">
+                <div className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center shrink-0">
+                  <span className="text-white text-xs font-serif">A</span>
+                </div>
+                <div>
+                  <h4 className="text-xs uppercase tracking-widest font-bold text-slate-900 mb-1">
+                    Our Studio
+                  </h4>
+                  <p className="text-slate-600 leading-relaxed font-medium">
+                    123 Artisan Row, Textile District
+                    <br />
+                    Mumbai, MH 400001
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
